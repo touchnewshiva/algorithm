@@ -1,0 +1,305 @@
+class allSorts
+{
+    void bubbleSorter(int a[])
+    {
+        for(int i = 0; i < a.length-1; i++)
+        {
+            for(int j = 0; j < a.length-i-1; j++)
+            {
+                if(a[j] > a[j+1])
+                {
+                    int temp = a[j];
+                    a[j] = a[j+1];
+                    a[j+1] = temp;
+                } 
+            }
+        }
+    }
+
+    void selectionSorter(int a[])
+    {
+        for(int i = 0; i < a.length-1; i++)
+        {
+            int min = i;
+            
+            for(int j = i+1; j < a.length; j++)
+            {
+                if(a[j] < a[min])
+                {
+                   min = j;
+                } 
+            }
+            
+            int temp = a[min];
+            a[min] = a[i];
+            a[i] = temp;
+        }
+    }
+
+    void insertionSorter(int []a)
+    {
+        int i,j,toInsert;
+        int n = a.length;
+        for (i = 1; i < n; i++)
+        {
+            toInsert = a[i];
+            for (j = i-1; j >= 0 && a[j] > toInsert; j--)
+            {
+                a[j+1] = a[j];
+            }
+            a[j+1] = toInsert;
+        }
+    }
+
+    // Merges two subarrays of arr[]. 
+    // First subarray is arr[l..m] 
+    // Second subarray is arr[m+1..r] 
+    void merge(int arr[], int l, int m, int r) 
+    { 
+        // Find sizes of two subarrays to be merged 
+        int n1 = m - l + 1; 
+        int n2 = r - m; 
+  
+        /* Create temp arrays */
+        int L[] = new int [n1]; 
+        int R[] = new int [n2]; 
+  
+        /*Copy data to temp arrays*/
+        for (int i=0; i < n1; i++) 
+            L[i] = arr[l + i]; 
+        for (int j=0; j<n2; j++) 
+            R[j] = arr[m + 1 + j]; 
+  
+  
+        /* Merge the temp arrays */
+  
+        // Initial indexes of first and second subarrays 
+        int i = 0, j = 0; 
+  
+        // Initial index of merged subarry array 
+        int k = l; 
+        while (i < n1 && j < n2) 
+        { 
+            if (L[i] <= R[j]) 
+            { 
+                arr[k] = L[i]; 
+                i++; 
+            } 
+            else
+            { 
+                arr[k] = R[j]; 
+                j++; 
+            } 
+            k++; 
+        } 
+  
+        /* Copy remaining elements of L[] if any */
+        while (i < n1) 
+        { 
+            arr[k] = L[i]; 
+            i++; 
+            k++; 
+        } 
+  
+        /* Copy remaining elements of R[] if any */
+        while (j < n2) 
+        { 
+            arr[k] = R[j]; 
+            j++; 
+            k++; 
+        } 
+    } 
+  
+    // Main function that sorts arr[l..r] using 
+    // merge() 
+    void mergeSorter(int arr[], int l, int r) 
+    { 
+        if (l < r) 
+        { 
+            // Find the middle point 
+            int m = (l+r)/2; 
+  
+            // Sort first and second halves 
+            mergeSorter(arr, l, m); 
+            mergeSorter(arr , m+1, r); 
+  
+            // Merge the sorted halves 
+            merge(arr, l, m, r); 
+        } 
+    } 
+
+    void quickSorter(int a[], int left, int right) 
+    {
+        int ii = right, jj;
+            
+        if(left < right)
+        {
+            for(jj = right; jj > left; jj--)
+            {
+                if(a[left] < a[jj])
+                {
+                    int temp = a[ii];
+                    a[ii] = a[jj];
+                    a[jj] = temp;
+                    ii--;
+                }
+            }
+            
+            if(a[left] > a[ii])
+            {
+                int temp = a[left];
+                a[left] = a[ii];
+                a[ii] = temp;
+            }
+                
+            quickSorter(a,left,ii - 1);
+                
+            quickSorter(a,ii + 1,right);
+        }
+    }
+
+    void quick3Sorter(int a[], int low, int high)  
+    {  
+        int mid = low, pivot = a[high];
+        int firstElement = low;
+        int lastElement = high;
+            
+        while (mid <= high)  
+        {  
+            if (a[mid]  <  pivot)
+            {   
+                int temp = a[low];
+                a[low] = a[mid];
+                a[mid] = temp;
+                low++;
+                mid++;
+            }
+            else if (a[mid] == pivot)
+            {
+                mid++;
+            }
+            else if (a[mid] > pivot)  
+            {   
+                int temp = a[high];
+                a[high] = a[mid];
+                a[mid] = temp;
+                high--;
+            }  
+        }
+        
+        if(firstElement < low-1)
+        {
+            quick3Sorter(a, firstElement, low-1);
+        }
+        
+        if(high+1 < lastElement)
+        {
+            quick3Sorter(a, high+1, lastElement);
+        }
+    }
+
+    void maxheapfinder(int a[], int n, int i)
+    {
+         int left = 2 * i + 1; 
+         int right = 2 * i + 2;
+         int bigchild = left; 
+    
+        if(right < n  && a[left] < a[right]) 
+        {  
+            bigchild = right;
+        }
+      
+        if(a[bigchild] > a[i]) 
+        {   
+            int temp = a[i];
+            a[i] = a[bigchild];
+            a[bigchild] = temp;
+        }
+    }
+
+    void heapSorter(int[] a)
+    {
+        for(int j = a.length; j > 1; j--)
+        {
+            for( int i = (j/2) - 1; i >= 0; i--)
+            {  
+                maxheapfinder(a, j, i);
+            }
+        
+            int temp = a[j-1];
+            a[j-1] = a[0];
+            a[0] = temp;
+        }
+    }
+
+    void shellSorter(int a[])
+    {
+         int len = a.length;
+         
+         for(int gap = len/2; gap > 0; gap = gap/2)
+         {
+             for(int fw = gap; fw < len; fw++)
+             {
+                 if(a[fw] < a[fw-gap])
+                 {
+                     int temp = a[fw];
+                     a[fw] = a[fw-gap];
+                     a[fw-gap] = temp;
+                     
+                     for(int rv = fw-gap; rv-gap >= 0; rv = rv-gap)
+                     {
+                        if(a[rv] < a[rv-gap])
+                        {
+                            temp = a[rv];
+                            a[rv] = a[rv-gap];
+                            a[rv-gap] = temp;
+                        }
+                        else 
+                        {
+                            break;
+                        }
+                     }
+                  }
+              }
+          }
+    }
+}
+//------------------------------------------------------------------------------
+
+public class Main 
+{
+    public static void main(String args[])
+    {
+        int a[] = {0,-9,1};
+        //int a[] = {0,1,9,-9,1,-1,0};
+        //int a[] = {0,3,93,89,168,179,181,168,89,204,181,293,722,1,-89};
+        int n = a.length;
+        
+        System.out.println("\n Given array");
+        
+        for(int inp = 0; inp < n; inp++)
+        {
+           System.out.print(" " + a[inp]);
+        }
+        
+        allSorts as = new allSorts();
+        
+        as.bubbleSorter(a);
+        // as.selectionSorter(a);
+        // as.insertionSorter(a);
+        // as.mergeSorter(a,0,n - 1);
+        // as.quickSorter(a,0,n - 1);
+        // as.quick3Sorter(a,0,n - 1);
+        // as.heapSorter(a);
+        // as.shellSorter(a);
+        
+        System.out.println("\n Sorted array");
+        
+        for(int ans = 0; ans < n; ans++)
+        {
+           System.out.print(" " + a[ans]);
+        }
+    }
+}
+
+
